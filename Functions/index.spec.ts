@@ -16,7 +16,7 @@ describe("Functions", function() {
   });
 });
 
-describe.only("Functions are first class citizens", function() {
+describe("Functions are first class citizens", function() {
   it("Should allow to assign a function to a variable", function() {
     const increment = function(n) {
       return n + 1;
