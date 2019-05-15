@@ -1,0 +1,34 @@
+{
+  "name": "js-intro",
+  "version": "1.0.0",
+  "description": "A few words on JavaScript (and TypeScript)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch --config jest.config.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathieueveillard/js-intro.git"
+  },
+  "keywords": [
+    "javascript",
+    "typescript",
+    "training"
+  ],
+  "author": "Mathieu Eveillard",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/mathieueveillard/js-intro/issues"
+  },
+  "homepage": "https://github.com/mathieueveillard/js-intro#readme",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@types/jest": "^23.3.14",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0",
+    "regenerator-runtime": "^0.13.1",
+    "rxjs": "^6.4.0"
+  }
+}

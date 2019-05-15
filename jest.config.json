@@ -1,0 +1,7 @@
+{
+  "testEnvironment": "node",
+  "testMatch": ["**/?(*.)spec.js?(x)"],
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest"
+  }
+}
