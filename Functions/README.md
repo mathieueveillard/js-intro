@@ -13,7 +13,7 @@ it("Should allow using functions", function() {
 });
 ```
 
-Function declarations are [hoisted](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting): one can invoke a function before its declaration, because JavaScript is a compiled language (just-in-time compiled, but still, compiled):
+Function declarations are [hoisted](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting), meaning that one can invoke a function before its declaration, because JavaScript is an interpreted ([and also JIT-compiled language](https://blog.octo.com/dans-les-entrailles-de-javascript-partie-1/)):
 
 ```javascript
 it("Function declarations are hoisted", function() {
@@ -48,9 +48,7 @@ it("Should allow to pass a function as a callback", function() {
     callback(result);
     return result;
   }
-  function callback(n) {
-    // do something
-  }
+  const callback = jest.fn();
   increment(0, callback);
   expect(callback).toHaveBeenCalledWith(1);
 });

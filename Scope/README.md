@@ -53,13 +53,13 @@ it("Shadowing is possible", function() {
 });
 ```
 
-Since a scope has access to variables defined in its parent scope and functions car return functions, closures are very easy:
+Since a scope has access to variables defined in its parent scope and functions car return functions, closures are very easy. A **closure** is a function with its lexical scope. In the example below, `counter()` is a closure:
 
 ```javascript
 it("A simple closure", function() {
   function makeCounter() {
     let count = 0;
-    return function() {
+    return function counter() {
       return ++count;
     };
   }
@@ -89,7 +89,7 @@ class Square {
 }
 ```
 
-The following shows that the value of `this` is determined by the call site. When extracting the `computePerimeter` and invoking the function on nothing, `this` is undefined:
+No see what happens if we extract `computePerimeter` from its context:
 
 ```javascript
 it("this should be undefined", function() {
@@ -98,6 +98,8 @@ it("this should be undefined", function() {
   expect(computePerimeter).toThrowError("Cannot read property 'size' of undefined");
 });
 ```
+
+When extracting the `computePerimeter` and invoking the function on nothing, `this` is undefined. The preceding means that the value of `this` is determined by the call site.
 
 Fortunately, the `.bind()` method allows one to create a new function with a given value of `this` by closure:
 
@@ -122,7 +124,7 @@ it("this should be defined", function() {
 });
 ```
 
-Finally, arrow functions are also uttermost helpful since they don't have their own `this` as regular functions. Hence, `this` inside an arrow function refers to the value of its enclosing scope, captured by closure :
+Finally, arrow functions are also uttermost helpful since they don't have their own `this` as regular functions. Hence, `this` inside an arrow function refers to the value of its enclosing scope:
 
 ```javascript
 it("arrow functions should not have their own 'this'", function() {

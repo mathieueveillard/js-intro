@@ -30,9 +30,7 @@ describe("Functions are first class citizens", function() {
       callback(result);
       return result;
     }
-    function callback(n) {
-      // do something
-    }
+    const callback = jest.fn();
     increment(0, callback);
     expect(callback).toHaveBeenCalledWith(1);
   });

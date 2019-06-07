@@ -2,11 +2,13 @@
 
 ## Object literals
 
+In contrast with class-based object programming, one can create objects without creating a class by writing an object literal.
+
 ```javascript
 const theSimplestObject = {};
 ```
 
-In contrast with class-based object programming, one can create objects without creating a class by writing an object literal. Every property of an object is public, but we'll see that there are ways to implement private properties.
+Every property of an object is public, but we'll see that there are ways to implement private properties.
 
 ```javascript
 it("Should allow defining and accessing object properties", function() {
@@ -68,16 +70,18 @@ it("Should allow spreading (shallow cloning)", function() {
     firstName: "Karl",
     lastName: "Lagerfeld"
   };
-  const karl = {
+  const karlLagerfeld = {
     name,
-    dateOfBirth: new Date("September 10, 1933")
+    occupation: "Dressmaker",
+    location: "Paris"
   };
-  const lagerfeld = {
-    ...karl
+  const derKeiser = {
+    ...karlLagerfeld,
+    location: "Heaven"
   };
-  expect(lagerfeld.name).toEqual(karl.name);
-  name.nickname = "Der Kaiser";
-  expect(lagerfeld.name.nickname).toEqual("Der Kaiser");
+  expect(derKeiser.name).toEqual(karlLagerfeld.name);
+  expect(derKeiser.occupation).toEqual("Dressmaker");
+  expect(derKeiser.location).toEqual("Heaven");
 });
 ```
 

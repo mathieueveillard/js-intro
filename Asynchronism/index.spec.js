@@ -102,7 +102,7 @@ describe("Promises", function() {
   });
 
   it("should allow error management within chain of promises", function(done) {
-    (Math.random() < 0.5 ? Promise.resolve(0) : Promise.reject())
+    Promise.reject()
       .then(increment)
       .then(multiplyBy3)
       .then(raiseToPower2)
@@ -123,15 +123,11 @@ describe("async | await", function() {
   });
 
   it("async | await should allow to handle errors as well", async function(done) {
-    let n = Math.random();
+    let n;
     try {
-      if (n < 0.5) {
-        throw Error();
-      }
       n = 0;
       n = await increment(n);
-      n = await multiplyBy3(n);
-      n = await raiseToPower2(n);
+      throw Error();
     } catch (error) {
       n = 9;
     }
@@ -140,7 +136,7 @@ describe("async | await", function() {
   });
 });
 
-describe.only("Observables", function() {
+describe("Observables", function() {
   const interval = 20;
 
   function Producer(next) {

@@ -44,16 +44,18 @@ describe("Object literals", function() {
       firstName: "Karl",
       lastName: "Lagerfeld"
     };
-    const karl = {
+    const karlLagerfeld = {
       name,
-      dateOfBirth: new Date("September 10, 1933")
+      occupation: "Dressmaker",
+      location: "Paris"
     };
-    const lagerfeld = {
-      ...karl
+    const derKeiser = {
+      ...karlLagerfeld,
+      location: "Heaven"
     };
-    expect(lagerfeld.name).toEqual(karl.name);
-    name.nickname = "Der Kaiser";
-    expect(lagerfeld.name.nickname).toEqual("Der Kaiser");
+    expect(derKeiser.name).toEqual(karlLagerfeld.name);
+    expect(derKeiser.occupation).toEqual("Dressmaker");
+    expect(derKeiser.location).toEqual("Heaven");
   });
 });
 

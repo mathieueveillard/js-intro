@@ -39,7 +39,7 @@ describe("Scopes", function() {
   it("A simple closure", function() {
     function makeCounter() {
       let count = 0;
-      return function() {
+      return function counter() {
         return ++count;
       };
     }

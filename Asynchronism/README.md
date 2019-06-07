@@ -50,7 +50,9 @@ We must seek for better syntax!
 
 Here Promises come to the rescue: an asynchronous function can be transformed to return a Promise and not require a callback function anymore. A Promise is an object to whom the client code will pass the callback function.
 
-A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) has in particular a `then` method and a `catch` method that allow the client code to register callbacks that will be called respectively in case of fulfillment (the asynchronous code has ended successfully) or rejection.
+More precisely, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) has a `then` method and a `catch` method that allow the client code to register callbacks that will be called respectively in case of fulfillment (the asynchronous code has ended successfully) or rejection.
+
+The following shows how to make a promise from an asynchronous function:
 
 ```javascript
 it("Should return a Promise and not directly require a callback anymore", function(done) {
@@ -120,7 +122,7 @@ function assertResultEquals(n) {
 }
 ```
 
-Now we're ready to chain Promises (`Promise.resolve(0).then(increment)` could also be written `increment(0)`):
+Now we're ready to chain Promises, starting with `Promise.resolve(0)`, a promise that immediately resolves with value `0`:
 
 ```javascript
 it("should allow to chain promises", function(done) {
@@ -137,7 +139,7 @@ and even resume after an error occured:
 
 ```javascript
 it("should allow error management within chain of promises", function(done) {
-  (Math.random() < 0.5 ? Promise.resolve(0) : Promise.reject())
+  Promise.reject()
     .then(increment)
     .then(multiplyBy3)
     .then(raiseToPower2)
@@ -147,7 +149,7 @@ it("should allow error management within chain of promises", function(done) {
 });
 ```
 
-Better, isn't it? But we could go further.
+Better, isn't it? But we could go farther.
 
 ## async | await
 
@@ -166,15 +168,11 @@ it("async | await should allow to write asynchronous code as if it was synchrono
 
 ```javascript
 it("async | await should allow to handle errors as well", async function(done) {
-  let n = Math.random();
+  let n;
   try {
-    if (n < 0.5) {
-      throw Error();
-    }
     n = 0;
     n = await increment(n);
-    n = await multiplyBy3(n);
-    n = await raiseToPower2(n);
+    throw Error();
   } catch (error) {
     n = 9;
   }
