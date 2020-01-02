@@ -3,13 +3,13 @@
 describe("Object literals", function() {
   it("Should allow defining and accessing object properties", function() {
     const name = {
-      firstName: "Karl",
-      lastName: "Lagerfeld"
+      firstName: "Firstname",
+      lastName: "Lastname"
     };
-    expect(name.firstName).toEqual("Karl");
-    expect(name["firstName"]).toEqual("Karl");
-    name.nickname = "Der Kaiser";
-    expect(name.nickname).toEqual("Der Kaiser");
+    expect(name.firstName).toEqual("Firstname");
+    expect(name["firstName"]).toEqual("Firstname");
+    name.nickName = "Nickname";
+    expect(name.nickName).toEqual("Nickname");
   });
 
   it("Should support computed keys", function() {
@@ -22,40 +22,83 @@ describe("Object literals", function() {
   it("Should support computed keys, e.g. symbols", function() {
     const dateOfBirth = Symbol();
     const object = {
-      [dateOfBirth]: new Date("September 10, 1933")
+      [dateOfBirth]: new Date("September 10, 2019")
     };
-    expect(object[dateOfBirth].getTime()).toEqual(new Date("September 10, 1933").getTime());
+    expect(object[dateOfBirth].getTime()).toEqual(new Date("September 10, 2019").getTime());
   });
 
   it("Should allow nesting objects", function() {
     const name = {
-      firstName: "Karl",
-      lastName: "Lagerfeld"
+      firstName: "Firstname",
+      lastName: "Lastname"
     };
-    const karl = {
+    const person = {
       name,
-      dateOfBirth: new Date("September 10, 1933")
+      dateOfBirth: new Date("September 10, 2019")
     };
-    expect(karl.name.firstName).toEqual("Karl");
+    expect(person.name.firstName).toEqual("Firstname");
+  });
+});
+
+describe("Spreading objects", function() {
+  it("Should allow spreading an object into another", function() {
+    const person = {
+      gender: "Female",
+      hairColor: "Dark blond",
+      bornFrom: "Humans",
+      dateOfBirth: new Date("September 10, 2019")
+    };
+    const clone = {
+      ...person
+    };
+    expect(clone.gender).toEqual("Female");
+    expect(clone.hairColor).toEqual("Dark blond");
+    expect(clone.bornFrom).toEqual("Humans");
+    expect(clone.dateOfBirth.getTime()).toEqual(new Date("September 10, 2019").getTime());
   });
 
-  it("Should allow spreading (shallow cloning)", function() {
+  it("Spreading: order matters!", function() {
+    const person = {
+      gender: "Female",
+      hairColor: "Dark blond",
+      bornFrom: "Humans",
+      dateOfBirth: new Date("September 10, 2019")
+    };
+    const clone = {
+      bornFrom: "Test tube",
+      ...person,
+      dateOfBirth: new Date("February 4, 2020")
+    };
+    expect(clone.bornFrom).toEqual("Humans");
+    expect(clone.dateOfBirth.getTime()).toEqual(new Date("February 4, 2020").getTime());
+  });
+
+  it("Spreading: it creates NO dependency", function() {
+    const person = {
+      hairColor: "Dark blond"
+    };
+    const clone = {
+      ...person
+    };
+    expect(clone.hairColor).toEqual("Dark blond");
+    person.hairColor = "Brown";
+    expect(clone.hairColor).toEqual("Dark blond");
+  });
+
+  it("Spreading: it's shallow cloning", function() {
     const name = {
-      firstName: "Karl",
-      lastName: "Lagerfeld"
+      firstName: "Firstname",
+      lastName: "Lastname"
     };
-    const karlLagerfeld = {
-      name,
-      occupation: "Dressmaker",
-      location: "Paris"
+    const person = {
+      name
     };
-    const derKeiser = {
-      ...karlLagerfeld,
-      location: "Heaven"
+    const clone = {
+      ...person
     };
-    expect(derKeiser.name).toEqual(karlLagerfeld.name);
-    expect(derKeiser.occupation).toEqual("Dressmaker");
-    expect(derKeiser.location).toEqual("Heaven");
+    expect(clone.name.firstName).toEqual("Firstname");
+    person.name.firstName = "Anothername";
+    expect(clone.name.firstName).toEqual("Anothername");
   });
 });
 

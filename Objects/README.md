@@ -13,13 +13,13 @@ Every property of an object is public, but we'll see that there are ways to impl
 ```javascript
 it("Should allow defining and accessing object properties", function() {
   const name = {
-    firstName: "Karl",
-    lastName: "Lagerfeld"
+    firstName: "Firstname",
+    lastName: "Lastname"
   };
-  expect(name.firstName).toEqual("Karl");
-  expect(name["firstName"]).toEqual("Karl");
-  name.nickname = "Der Kaiser";
-  expect(name.nickname).toEqual("Der Kaiser");
+  expect(name.firstName).toEqual("Firstname");
+  expect(name["firstName"]).toEqual("Firstname");
+  name.nickName = "Nickname";
+  expect(name.nickName).toEqual("Nickname");
 });
 ```
 
@@ -40,9 +40,9 @@ This is especially usefull with Symbols (a way to implement privacy):
 it("Should support computed keys, e.g. symbols", function() {
   const dateOfBirth = Symbol();
   const object = {
-    [dateOfBirth]: new Date("September 10, 1933")
+    [dateOfBirth]: new Date("September 10, 2019")
   };
-  expect(object[dateOfBirth].getTime()).toEqual(new Date("September 10, 1933").getTime());
+  expect(object[dateOfBirth].getTime()).toEqual(new Date("September 10, 2019").getTime());
 });
 ```
 
@@ -51,37 +51,92 @@ Objects can be nested:
 ```javascript
 it("Should allow nesting objects", function() {
   const name = {
-    firstName: "Karl",
-    lastName: "Lagerfeld"
+    firstName: "Firstname",
+    lastName: "Lastname"
   };
-  const karl = {
+  const person = {
     name,
-    dateOfBirth: new Date("September 10, 1933")
+    dateOfBirth: new Date("September 10, 2019")
   };
-  expect(karl.name.firstName).toEqual("Karl");
+  expect(person.name.firstName).toEqual("Firstname");
 });
 ```
 
-A simple way to shallow clone an object is using the spread operator `...`:
+## Spreading
+
+A simple way to shallow clone an object is using the spread operator `...`. Spreading an object simply copies all of its properties, which is very convenient in case of heavy POJOs (Plain Old JavaScript Object):
 
 ```javascript
-it("Should allow spreading (shallow cloning)", function() {
+it("Should allow spreading an object into another", function() {
+  const person = {
+    gender: "Female",
+    hairColor: "Dark blond",
+    bornFrom: "Humans",
+    dateOfBirth: new Date("September 10, 2019")
+  };
+  const clone = {
+    ...person
+  };
+  expect(clone.gender).toEqual("Female");
+  expect(clone.hairColor).toEqual("Dark blond");
+  expect(clone.bornFrom).toEqual("Humans");
+  expect(clone.dateOfBirth.getTime()).toEqual(new Date("September 10, 2019").getTime());
+});
+```
+
+When spreading an object into another, it is possible to override properties. However, be careful because order matters:
+
+```javascript
+it("Spreading: order matters!", function() {
+  const person = {
+    gender: "Female",
+    hairColor: "Dark blond",
+    bornFrom: "Humans",
+    dateOfBirth: new Date("September 10, 2019")
+  };
+  const clone = {
+    bornFrom: "Test tube",
+    ...person,
+    dateOfBirth: new Date("February 4, 2020")
+  };
+  expect(clone.bornFrom).toEqual("Humans");
+  expect(clone.dateOfBirth.getTime()).toEqual(new Date("February 4, 2020").getTime());
+});
+```
+
+There is NO binding between the original object and its clone (`object -/-> clone`). The former would change without the later to be updated:
+
+```javascript
+it("Spreading: it creates NO dependency", function() {
+  const person = {
+    hairColor: "Dark blond"
+  };
+  const clone = {
+    ...person
+  };
+  expect(clone.hairColor).toEqual("Dark blond");
+  person.hairColor = "Brown";
+  expect(clone.hairColor).toEqual("Dark blond");
+});
+```
+
+However, spreading is **shallow cloning**, as opposed to deep cloning. In case of a nested object, only a reference is copied:
+
+```javascript
+it("Spreading: it's shallow cloning", function() {
   const name = {
-    firstName: "Karl",
-    lastName: "Lagerfeld"
+    firstName: "Firstname",
+    lastName: "Lastname"
   };
-  const karlLagerfeld = {
-    name,
-    occupation: "Dressmaker",
-    location: "Paris"
+  const person = {
+    name
   };
-  const derKeiser = {
-    ...karlLagerfeld,
-    location: "Heaven"
+  const clone = {
+    ...person
   };
-  expect(derKeiser.name).toEqual(karlLagerfeld.name);
-  expect(derKeiser.occupation).toEqual("Dressmaker");
-  expect(derKeiser.location).toEqual("Heaven");
+  expect(clone.name.firstName).toEqual("Firstname");
+  person.name.firstName = "Anothername";
+  expect(clone.name.firstName).toEqual("Anothername");
 });
 ```
 
@@ -136,6 +191,11 @@ it("Mutations of an object should not affect its prototype", function() {
 ```
 
 Objects might refer one to each other up to the root object `{}`, hence the expression **"chain of prototypes"**.
+
+You should pay attention to the differencies between spreading and prototyping:
+
+- Spreading is kind of a snapshot, thus it creates no dependency. Its action is shallow.
+- Prototyping creates a one-way dependency and works as a chain of prototypes.
 
 ## Adding behaviour
 
